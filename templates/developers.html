@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nat's Game Recommender</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/PSone.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="static/favicon.jpeg"/>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" {% if current_route == '/' %}class="active"{% endif %}>Home</a>
+        <a href="/saved_games" {% if current_route == '/saved_games' %}class="active"{% endif %}>Saved Games</a>
+        <a href="/developers" class="active">Developer</a>
+        <a href="/bookmarked_games" {% if current_route == '/bookmarked_games' %}class="active"{% endif %}> Bookmarked Games</a>
+        <a href="/filtered_games"> Future Games</a>
+
+        <a href="{{ url_for('search_game') }}">Search Deals</a>
+
+        {% if message %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+    <h1>Developer Dropdown</h1>
+    <h3>Want to see the top-rated games by a specific developer?</h3>
+    <h3> Say no more:</h3>
+    <form id="searchForm">
+        <select id="developerDropdown" name="selected_developer" data-search="true">
+            {% for key, value in developer_dictionary|dictsort %}
+            <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Get Games</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#developerDropdown').select2();
+        });
+    </script>
+    <br>
+        <br>
+    <a href='https://api.rawg.io/docs/'>Data gathered from RAWG API. </a>
+
+</body>
+</html>
