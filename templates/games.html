@@ -3,6 +3,7 @@
 <head>
     <title>Games List</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/PSone.min.css">
+    <link rel="icon" type="image/x-icon" href="static/favicon.jpeg"/>
 
     <style>
         .navbar {
@@ -39,9 +40,12 @@
 <body>
     <div class="navbar">
         <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('favorites') }}">My Favorites</a>
+        <a href="/saved_games" {% if current_route == '/saved_games' %}class="active"{% endif %}>Saved Games</a>
         <a href="{{ url_for('developers') }}">Developer</a>
         <a href="/bookmarked_games"> Bookmarked Games</a>
+        <a href="/filtered_games"> Future Games</a>
+        <a href="{{ url_for('search_game') }}">Search Deals</a>
+
         {% if message %}
         <a href="{{ url_for('logout') }}">Logout</a>
       {% else %}
