@@ -1,5 +1,5 @@
 # game_recommendation_system
-This project is one that combines my gaming passion with my programming passion - a game recommendation application created with **Python, Flask, HTML, CSS, JavaScript**, fully integrated with a **MySQL** database and deployed/hosted with** Anaconda's PythonAnywhere**.
+This project is one that combines my gaming passion with my programming passion - a game recommendation application created with **Python, Flask, HTML, CSS, JavaScript**, fully integrated with a **MySQL** database and deployed/hosted with **Anaconda's PythonAnywhere**.
 
 Users can create an account, generate games according to their platform, genre, and user score thresholds (scale from 1-10). The games are extracted from a Kaggle dataset containing thousands of games that have sold over 100,000 copies (https://www.kaggle.com/datasets/gregorut/videogamesales). I used the pandas library to pre-process the data.
 
@@ -11,9 +11,9 @@ I also created a Search Deal functionality, where a user can type in any game an
 
 Finally, I created a Future Games tab, where I displayed the most anticipated games for the rest of 2023. Users can filter the games by genre, as well as see the release date for each. 
 
-I programmed password-based authentication for all users, utilizing the Flask Bcrypt library to store hashed passwords.
+I programmed password-based authentication for all users, utilizing the Flask Bcrypt library to store hashed passwords and enforcing a password complexity requirement. I used the XMLHttpRequest (XHR) JavaScript class to interact with my server and process data.
 
-I also had 
-This project utilized the RAWG API and CheapShark API to recommend games as well as sales on the games. 
+I will keep improving the application and adding new features for users - I would like to add OAuth functionality to my program, allowing users to sign in using other accounts such as Google Accounts.. 
 
+Feel free to take a look at the project here: http://gamerecs-natnat202.pythonanywhere.com/
 
