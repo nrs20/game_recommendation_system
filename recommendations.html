@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommended Games</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/PSone.min.css">
+    <link rel="icon" type="image/x-icon" href="static/favicon.jpeg"/>
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .recommended-game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .recommended-game {
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+            /* Other styles for individual game elements */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/" {% if current_route == '/' %}class="active"{% endif %}>Home</a>
+        <a href="/saved_games" {% if current_route == '/saved_games' %}class="active"{% endif %}>Saved Games</a>
+        <a href="/developers" {% if current_route == '/developers' %}class="active"{% endif %}>Developer</a>
+        <a href="/bookmarked_games" {% if current_route == '/bookmarked_games' %}class="active"{% endif %}> Bookmarked Games</a>
+        <a href="/filtered_games"> Future Games</a>
+
+        {% if message %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+</head>
+    
+</select>
+    <br>
+    <a href="{{ url_for('index') }}">Home</a>
+    <h1>Recommended Games</h1>
+    <h2>Game Information:</h2>
+    <ul>
+        <div class="recommended-game-container">
+            {% for game in games %}
+            <div class="recommended-game {% if game_info[game.Genre|join(', ')][game.Name]['reddit_url'] is none or game_info[game.Genre|join(', ')][game.Name]['reddit_url'] == '' %}no-reddit{% endif %}">
+                {# Code to execute if the reddit_url is equal to None or an empty string #}
+
+            <a href="https://www.google.com/search?q={{ game.Name }}" target="_blank">{{ game.Name }}</a>
+            {% if 'loggedin' in session and session['loggedin'] and game_info %}
+            <form onsubmit="return saveGame('{{ game.Name }}', '{{ game_info[game.Genre|join(", ")][game.Name]["reddit_url"] }}', '{{ game_info[game.Genre|join(", ")][game.Name]['photo'] }}', '{{ game.price}}', '{{ game.deal_link }}')">
+                <input type="hidden" name="game_name" value="{{ game.Name }}">
+                <input type="hidden" name="reddit_url" value="{{game_info[game.Genre|join(", ")][game.Name]["reddit_url"] }}">
+                <input type="hidden" name="photo" value="{{game_info[game.Genre|join(", ")][game.Name]['photo']}}">
+                <input type="hidden" name="price" value="{{ game.price}}">
+                <input type="hidden" name="deal" value={{ game.deal_link }}>
+                
+                <button type="submit">Save</button>
+            </form>
+            
+            {% endif %}
+            {% if 'photo' in game_info[game.Genre|join(", ")][game.Name] and game_info[game.Genre|join(", ")][game.Name]['photo'] != 'None' %}
+            <img src="{{ game_info[game.Genre|join(", ")][game.Name]['photo'] }}"
+            alt="{{ game.Name }} Photo"
+            width="400" 
+            height="300"
+       >
+            {% else %}
+            <!-- Display a default image or placeholder if no photo available -->
+            <img src="static/random.jpeg"
+            alt="Controller Photo"
+            width="400" 
+            height="300">
+                        {% endif %}
+
+            <br>
+            {% if game.price and game.deal_link %}
+            <p> Cheapest Price:  {{game.price}} USD - <a href="{{ game.deal_link }}" target="_blank">View Deal</a> </p>
+            <br>
+            {% endif %}
+
+            Genre: {{ game.Genre|join(", ") }}, User Score: {{ game.User_Score }}, Platform: {{ game.Platform|replace("[", "")|replace("]", "")|replace("'", " ") }}
+            <p>{{ game_info[game.Genre|join(", ")][game.Name][0] }}</p>
+
+            {% if game_info %}
+            <ul>
+                {% if game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["reddit_url"]  %}
+                <a href="{{ game_info[game.Genre|join(", ")][game.Name]["reddit_url"] }}" target="_blank">{{ game.Name }} Reddit Community</a>
+                <p></p>
+                {% else %}
+                Reddit URL Not Found.
+                <p></p>
+
+                {% endif %}
+
+                {% if game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["website"]  %}
+                <a href="{{ game_info[game.Genre|join(", ")][game.Name]["website"] }}" target="_blank">{{ game.Name }} Official Website</a>
+                <p></p>
+                {% else %}
+                Official Website Not Found.
+                <p></p>
+
+                {% endif %}
+
+
+
+
+                {% if game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["stores"] %}
+        <p class="game-stores">
+            Stores:
+            <ul>
+                {% for store in game_info[game.Genre|join(", ")][game.Name]["stores"] %}
+                    {% if store.domain %}
+                    <li><a href="https://{{ store.domain }}" target="_blank" data-store="{{ store.name }}">{{ store.name }}</a></li>
+                    {% else %}
+                        <li>No store information available</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </p>
+    {% else %}
+        Stores Not Found.
+    {% endif %}
+
+                {% if game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["metacritic"]  %}
+                <a href="{{ game_info[game.Genre|join(", ")][game.Name]["metacritic"] }}" target="_blank">{{ game.Name }} Metacritic</a>
+
+                {% else %}
+                MetaCritic URL Not Found.
+                {% endif %}
+                {% if game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["developers"]  %}
+                <p>Developers: {{game.Genre|join(", ") in game_info and game_info[game.Genre|join(", ")][game.Name]["developers"]|join(", ")|replace("[", "")|replace("]", "") }} </p>
+                {% endif %}
+            </ul>
+            {% endif %}
+
+            <!-- Displaying developers' names -->
+            <ul>
+                {% for developer_name in game.Developers %}
+                <li>{{ developer_name }}</li>
+                {% endfor %}
+
+            </ul>
+
+            
+        </li>
+    </div>
+        {% endfor %}
+    </div>
+
+    </ul>
+
+   <!-- <button onclick="regenerateGames()">Regenerate</button> !-->
+
+    <script>
+        function regenerateGames() {
+            // Make an AJAX request to the /regenerate route
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/regenerate', true);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // If the AJAX request is successful, update the game_info data without reloading the page
+                    // Assuming the game_info data is stored in a JavaScript variable called 'gameInfo'
+                    gameInfo = xhr.response.game_info; // Assuming the response contains the updated game_info data
+                } else {
+                    // If there is an error, display an alert message
+                    alert('Error regenerating the games.');
+                }
+            };
+
+            xhr.onerror = function () {
+                // If there is an error, display an alert message
+                alert('Error regenerating the games.');
+            };
+
+            xhr.responseType = 'json'; // Set the response type to JSON
+            xhr.send();
+
+            // Prevent the button from submitting the form in the default way
+            return false;
+        }
+
+        function saveGame(gameName, redditUrl, photo, price, deal) {
+            // Send the form data using AJAX
+            var formData = new FormData();
+            formData.append('game_name', gameName);
+            formData.append('reddit_url', redditUrl); // Include the reddit_url in the form data
+            formData.append('photo', photo); // Include the reddit_url in the form data
+            formData.append('price', price); // Include the reddit_url in the form data
+            formData.append('deal', deal); // Include the reddit_url in the form data
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/save_game', true);
+        
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Display the success message in a popup
+                    alert('Game saved to savedGames successfully!');
+                } else {
+                    // Display the error message in a popup
+                    alert('Error saving the game to favorites.');
+                }
+            };
+        
+            xhr.onerror = function () {
+                // Display the error message in a popup
+                alert('Error saving the game to favorites.');
+            };
+        
+            xhr.send(formData);
+        
+            // Prevent the form from submitting in the default way
+            return false;
+        }
+        
+
+        function filterGames() {
+            // Get the selected option from the dropdown
+            var filterDropdown = document.getElementById("filterDropdown");
+            var selectedOption = filterDropdown.value;
+
+            // Get all game elements
+            var games = document.querySelectorAll("li");
+
+            // Loop through the game elements and hide/show based on the selected option
+            for (var i = 0; i < games.length; i++) {
+                var game = games[i];
+                if (selectedOption === "all") {
+                    // Show all games
+                    game.style.display = "list-item";
+                } else if (selectedOption === "reddit") {
+                    // Show games with Reddit URL
+                    if (game.classList.contains("no-reddit")) {
+                        game.style.display = "none";
+                    } else {
+                        game.style.display = "list-item";
+                    }
+                } else if (selectedOption === "no-reddit") {
+                    // Show games without Reddit URL
+                    if (game.classList.contains("no-reddit")) {
+                        game.style.display = "list-item";
+                    } else {
+                        game.style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+    <footer>
+        <a href='https://api.rawg.io/docs/'>Data gathered from RAWG API!</a>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Games List</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/98mprice/PSone.css@master/PSone.min.css">
+
+    <style>
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .recommended-game-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .recommended-game {
+            width: calc(50% - 10px);
+            margin-bottom: 20px;
+            /* Other styles for individual game elements */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('favorites') }}">My Favorites</a>
+        <a href="{{ url_for('developers') }}">Developer</a>
+        <a href="/bookmarked_games"> Bookmarked Games</a>
+        {% if message %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+      <a href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </div>
+    <h1>Top Rated Games by Selected Developer</h1>
+    <h2> {{selected}}</h2>
+
+    <ul>
+        <div class="recommended-game-container">
+        {% for game in games %}
+
+            <!-- Inside the loop that displays games -->
+
+            <div class="recommended-game">
+            <h2> <a href="https://www.google.com/search?q={{ game.name }}" target="_blank">{{ game.name }}</a>- Rating: {{ game.rating }}</h2>
+            <form method="post" action="/bookmark_game" onsubmit="return saveGame('{{ game.name }}');">
+                <input type="hidden" name="game_name" value="{{ game.name }}">
+                {% if logged_in %}
+                <button type="submit">Bookmark</button>
+                {% endif %}
+                <br>
+            <img src="{{ game.background_image }}" alt="{{ game.name }}" width="400" 
+            height="300">
+            
+            
+            <p>Platforms:</p>
+            <ul>
+                {% if game.platforms %}
+                {% for platform_data in game.platforms %}
+                <li>{{ platform_data.platform.name }}</li>
+                {% endfor %}
+                {% else %}
+                <p>No game platform available.</p>
+                {% endif %}
+
+            </ul>
+            {% if game.metacritic %}
+            <p>  Metacritic:{{ game.metacritic }}</p>
+            {% else %}
+            <p>Metacritic not available.</p>
+            {% endif %}
+
+            Genres:
+{% if game.genres %}
+<ul>
+    {% for genre in game.genres %}
+    <li>{{ genre.name }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Genre not available.</p>
+{% endif %}
+
+
+
+{% if game.stores %}
+<p>Stores:</p>
+<ul>
+    {% for store_data in game.stores %}
+    <li>{{ store_data.store.name }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+</form>
+    </div>
+        {% endfor %}
+</div>
+    </ul>
+    <script>
+        function saveGame(gameName) {
+            var formData = new FormData();
+            formData.append('game_name', gameName);
+    
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/bookmark_game', true);
+    
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Display the success message in a popup
+                    alert('Game saved to bookmarks successfully!');
+                } else {
+                    // Display the error message in a popup
+                    alert('sError saving the game to favorites.');
+                }
+            };
+    
+            xhr.onerror = function () {
+                // Display the error message in a popup
+                alert('Errsor saving the game to favorites.');
+            };
+    
+            xhr.send(formData);
+    
+            // Prevent the form from submitting in the default way
+            return false;
+        }
+    </script>
+</body>
+</html>
