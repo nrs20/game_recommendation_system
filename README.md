@@ -17,4 +17,4 @@ I programmed password-based authentication for all users, utilizing the Flask Bc
 
 I will keep improving the application and adding new features for users - I would like to add OAuth functionality to my program, allowing users to sign in using other accounts such as Google Accounts.
 
-
+You can take a look at the site here - it is a work in progress! https://gamerecs-natnat202.pythonanywhere.com/
