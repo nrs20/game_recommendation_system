@@ -1,4 +1,6 @@
 # game_recommendation_system
+<img width="825" alt="image" src="https://github.com/nrs20/game_recommendation_system/assets/92758174/d3e5adba-3f9b-4de3-8475-2c342a659b48">
+
 This project is one that combines my gaming passion with my programming passion - a game recommendation application created with **Python, Flask, HTML, CSS, JavaScript**, fully integrated with a **MySQL** database and deployed/hosted with **Anaconda's PythonAnywhere**.
 
 Users can create an account, generate games according to their platform, genre, and user score thresholds (scale from 1-10). The games are extracted from a Kaggle dataset containing thousands of games that have sold over 100,000 copies (https://www.kaggle.com/datasets/gregorut/videogamesales). I used the pandas library to pre-process the data.
