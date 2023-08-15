@@ -15,7 +15,6 @@ Finally, I created a Future Games tab, where I displayed the most anticipated ga
 
 I programmed password-based authentication for all users, utilizing the Flask Bcrypt library to store hashed passwords and enforcing a password complexity requirement. I used the XMLHttpRequest (XHR) JavaScript class to interact with my server and process data.
 
-I will keep improving the application and adding new features for users - I would like to add OAuth functionality to my program, allowing users to sign in using other accounts such as Google Accounts.. 
+I will keep improving the application and adding new features for users - I would like to add OAuth functionality to my program, allowing users to sign in using other accounts such as Google Accounts.
 
-Feel free to take a look at the project here: http://gamerecs-natnat202.pythonanywhere.com/
 
